@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Longitudinal Model</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="../css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="index.html">MYRON PHAN</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../blog_archives_page1.html">Blog</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Page Header-->
+        <header class="masthead1">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="post-heading" style="margin-bottom:-60px;padding-top: 4rem;">
+                            <h1 style= "font-size: 3rem; color: white;margin-left: auto;margin-right:auto;text-align: center;"> Airplane Longitudinal Model</h1>
+                            <h2 class="subheading" style = "color:whitesmoke;font-size:1.6rem;">Modeling and simulation of a simple 3DOF model</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Post Content-->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7" style="text-align: justify; font-family: Open Sans;">
+                        <h2 class="section-heading">Introduction</h2>
+                        <hr class="my-4" />
+                        <p>This particular project is going to be simulating a 3DOF (degrees of freedom) longitudinal model aircraft model. One would do a 3DOF simulation like this instead of a 6DOF simulation because it's much simpler to do control system design and performance analysis on a 3DOF versus a 6DOF model.</p>
+                        <h2 class="section-heading">Mathematical Model</h2>
+                        <hr class="my-4" />
+                        <p>You can’t do a simulation without the mathematical model. The model provides all the physics and dynamics that the vehicle will do when you subject it to certain conditions.</p>
+                        <img src = "assets/longModel_forceEquations.png" class = "center1" style = "width:100%">
+                        <p style = "text-align: center; font-style: italic; font-weight: bold;">Figure 1: Equations of motion for a typical 6 DOF aircraft</p>
+                        <p>Pretty scary, right? That’s what I thought when I first looked at this, but it’s actually not as scary as one may think. Although I will not be fully deriving these equations in this blog post, maybe in a future post I will.</p>
+                        <p>For now, we are going to reduce these equations down to separate the longitudinal motion from the lateral motion. Let’s start with the force equations in Figure 1. I’ve put them here again for the reader’s convenience.</p>
+                        <img src = "assets/forceEquations.png" class = "center1" style = "width:100%">
+                        <p style = "text-align: center; font-style: italic; font-weight: bold;">Figure 2: Force Equations</p>
+                        <p>One thing that we can strongly simplify in this equation is the gravity term, gd. Here is the entire gravity matrix shown below. This gravity term is transformed from the inertial frame to the wind frame.</p>
+                        <img src = "assets/gravityEquations.png" class = "center1"> 
+                        <p style = "text-align: center; font-style: italic; font-weight: bold;">Figure 3: Gravity Equations</p>
+                        <p>Yikes. That’s a lot of terms, and this set of equations is basically coupled in every rotational degree of freedom. But we’re trying to analyze just the longitudinal motion right now so let’s make a couple of huge simplifying assumptions.</p>
+                        <p>If we’re just analyzing longitudinal motion then we can say that there is no rolling motion (phi = 0) and sideslip angle is small (for small angle approximation). This will reduce down our gravity term down to this:</p>
+                        <img src = "assets/simpGravityTerms.png" class = "centerSmall">
+                        <p style = "text-align: center; font-style: italic; font-weight: bold;">Figure 4: Simplified Gravity Terms</p>
+                        <p>Much better. Now our force equations look like this as well.</p>
+                        <img src= "assets/simForceEquations.png" class = "center1">
+                        <p style = "text-align: center; font-style: italic; font-weight: bold;">Figure 5: Simplified Force Terms</p>
+                        <p>Another awesome thing is that we don’t even have to use all of these terms for longitudinal motion. The middle term with the beta dot in it is definitely not useful for us right now.</p>
+                        <p>Let’s make more simplifying assumptions. This time on the kinematic equations (see figure 1) though. We can apply our roll angle assumption and we will get this from the second kinematic equation.</p>
+                        <img src = "assets/thetaDotQ.png" class = "centerSmall" style = "width:15%">
+                        <p>We can also say that roll and yaw rates are small as well to yield this from the pitching moment equation in figure 1.</p>
+                        <img src = "assets/JQdot.png" class = "centerSmall" style = "width:25%">
+                        <p>And.. we’re done! Here are all the equations that we have right now where our state derivative vector would be Vt dot, alpha dot, theta dot, and Q dot.</p>
+                        <img src = "assets/Figure6.png" class = "center1">
+                        <h2>Simulation</h2>
+                        <p>Now we can start simulating these equations. We can propogate these equations of motion in a number of ways, but I will be using a Runge Kutta 4th order integrator. Here are the state vector inital conditions as well: </p>
+                        <img src = "assets/Fig7.png" class = "center1" style = "width:75%">
+                        <p>There are actually two more control inputs that we are considering (cg position and landing legs) that are not shown here.</p>
+                        <img src="assets/Fig8.png" class = "center1">
+                        <p style = "text-align: center; font-style: italic; font-weight: bold;">Figure 7: Alpha and Theta interplay VS Time</p>
+                        <p>Above is simulated with an elevator kick at 1 second with a kick back at 1.5 seconds. These oscillations die very quickly at around 10 seconds, where it seems to make a difference of .001 while oscillating. This response is known as the short period response, where the more negative eigenvalue is induced, resulting in an extremely fast response time.</p>
+                        <img src= "assets/FIg9.png" class = "center1">
+                        <p style = "text-align: center; font-style: italic; font-weight: bold;">Figure 8: Alpha and Theta interplay VS Time</p>
+                        <p>Above we have another graph where the elevator kicked .1 radians from 1 - 4 seconds and from 4-7 seconds it kicked .1 radians in the other way. This excited the phugoid mode, where theta varied heavily with time while alpha is not. Plotting other parameters such as speed, altitude and flight path angle show that they also vary significantly with theta.</p>
+                        <h2 class="section-heading">Conclusion</h2>
+                        <hr class="my-4" />
+                        <p>We could do a lot more simulation and control analysis of this system but this post was just meant as an introduction to modeling and simulation of this system. However, we learned a lot just from deriving and simulating a simple case!</p>
+                        <p>In the future I will be posting more about the longitudinal model as well as the lateral model but this blog post is long enough already. Any feedback on this particular post is greatly appreciated as well!</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <!-- Footer-->
+        <footer class="border-top">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <ul class="list-inline text-center">
+                            <li class="list-inline-item">
+                                <a href="https://www.linkedin.com/in/myronphan/">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>  
+                            <li class="list-inline-item">
+                                <a href="https://github.com/ultramyron">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

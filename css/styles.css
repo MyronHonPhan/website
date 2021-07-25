@@ -10825,8 +10825,9 @@ header.masthead .site-heading .h1 {
   header.masthead .post-heading h1, header.masthead .post-heading .h1 {
     font-size: 3.5rem;
   }
-  header.masthead .post-heading .subheading {
+  header.masthead1 .post-heading .subheading {
     font-size: 1.875rem;
+    font-weight: 100;
   }
 }
 
@@ -10879,4 +10880,16 @@ header.masthead .site-heading .h1 {
   .post-preview > a > .post-title {
     font-size: 2.25rem;
   }
+}
+.center1 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+}
+.centerSmall {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 35%;
 }
